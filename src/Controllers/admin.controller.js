@@ -5,9 +5,9 @@ const adminService =  require("../Services/admin.service");
 const registerAdmin = async (req, res) => {
     try {
 
-        const { name, email, password } = req.body;
+        const { username, profile, email, password, roleId } = req.body;
 
-        const adminData = await adminService.registerAdmin(name, email, password);
+        const adminData = await adminService.registerAdmin(username, profile, email, password, roleId);
 
         res.status(201).json({
             success: true,
