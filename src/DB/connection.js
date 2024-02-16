@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 
-const MONGO_URI = process.env.MONGO_URL || 'mongodb://localhost:27017';
+const db_name = 'admin-panel';
+
+const MONGO_URI = process.env.MONGO_URL || `mongodb://localhost:27017/${db_name}`;
 
 
 
 mongoose.connect(MONGO_URI)
 .then((response) => {
-    console.log("MongoDB Connected Successfully");
+    console.log("Database Connected");
 }).catch((error) => {
     console.log("SOME BUGS IN Connection FILE :",error);
 })

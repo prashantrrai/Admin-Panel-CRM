@@ -35,10 +35,12 @@ const adminSchema = new mongoose.Schema({
         required: [true, 'Password is required'],
         minlength: [8, 'Password must be at least 8 characters']
     },
-    isAdmin: {
-        type: Boolean,
-        default: 0
+    roleId: {
+        type: Number,
+        required: true,
+        enum: [1, 2, 3, 4, 5],
     },
+    roleDetails: {},
     isVerified: {
         type: Boolean,
         default: 0
@@ -46,13 +48,6 @@ const adminSchema = new mongoose.Schema({
     two_factor_enabled: {
         type: Boolean,
         default: 0
-    },
-    roleId: {
-        type: Number,
-        required: true,
-        enum: [1,2],
-        // 1 - SuperAdmin
-        // 2 - Admin
     },
     lastLogin: {
         type: Date,
@@ -69,6 +64,34 @@ const adminSchema = new mongoose.Schema({
     }
 
 );
+
+
+// Pre-save hook to set roleDetails based on roleId
+adminSchema.pre('save', function(next) {
+    const roleIdDetailsMap = {
+        1: "SuperAdmin",
+        2: "Admin",
+        3: "HR",
+        4: "Employee",
+        5: "Customer"
+    };
+
+    this.roleDetails = roleIdDetailsMap[this.roleId];
+    next();
+});
+
+// Customize response object to include roleDetails inside roleId
+adminSchema.set('toJSON', {
+    transform: function(doc, ret, options) {
+        ret.roleId = {
+            id: ret.roleId,
+            role: doc.roleDetails
+        };
+        delete ret.roleDetails;
+        return ret;
+    }
+});
+
 
 const adminModel = mongoose.model('admin', adminSchema);
 

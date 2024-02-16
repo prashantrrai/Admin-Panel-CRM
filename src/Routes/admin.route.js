@@ -1,12 +1,14 @@
 const { Router } = require("express");
 
 // imports
-const { registerAdmin, getAdmin } = require("../Controllers/admin.controller");
+const { registerUserController, getUserController, deleteUserController, editUserController } = require("../Controllers/admin.controller");
 
 const adminRouter = Router();
 
 
-adminRouter.post("/admin", registerAdmin);
-adminRouter.get("/admin", getAdmin);
+adminRouter.post("/admin", registerUserController);
+adminRouter.get("/admin", getUserController);
+adminRouter.delete("/admin/:id", deleteUserController);
+adminRouter.put("/admin/:id", editUserController);
 
 module.exports = adminRouter;

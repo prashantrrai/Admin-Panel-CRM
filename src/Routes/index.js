@@ -14,7 +14,7 @@ homeRoutes.get('/', (req, res) => {
             message: MESSAGE_OK
         });
     } catch (error) {
-        console.error(error);
+        console.error("ERROR IN Home ROUTE:", error);
         res.status(STATUS_ERROR).json({
             success: false,
             message: MESSAGE_ERROR

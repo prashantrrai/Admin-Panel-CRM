@@ -1,21 +1,21 @@
 const adminModel = require("../Models/admin.model");
-const adminService =  require("../Services/admin.service");
+const { registerUserService, deleteUserService, editUserService } =  require("../Services/admin.service");
 
 
-const registerAdmin = async (req, res) => {
+const registerUserController = async (req, res) => {
     try {
 
         const { username, profile, email, password, roleId } = req.body;
 
-        const adminData = await adminService.registerAdmin(username, profile, email, password, roleId);
+        const adminData = await registerUserService(username, profile, email, password, roleId);
 
         res.status(201).json({
             success: true,
-            message: "Admin Registered Successfully",
+            message: "User Registered Successfully",
             response: adminData
         })
     } catch (error) {
-        console.error(error);
+        console.error("ERROR IN registerUser CONTROLLER:", error);
         return res.status(500).json({
             success: false,
             message: error.message
@@ -23,17 +23,17 @@ const registerAdmin = async (req, res) => {
     }
 }
 
-const getAdmin = async (req, res) => {
+const getUserController = async (req, res) => {
     try {
-        const adminData = await adminModel.find();
+        const userData = await adminModel.find();
         
         res.status(200).json({
             success: true,
-            message: "Admin Fetched Successfully",
-            response: adminData
+            message: "User Fetched Successfully",
+            response: userData
         })
     } catch (error) {
-        console.error(error);
+        console.error("ERROR IN getUser CONTROLLER:", error);
         return res.status(500).json({
             success: false,
             message: error.message
@@ -41,4 +41,45 @@ const getAdmin = async (req, res) => {
     }
 }
 
-module.exports = { registerAdmin , getAdmin};
+const deleteUserController = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await deleteUserService(id);
+
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+        })
+    } catch (error) {
+        console.error("ERROR IN deleteUser CONTROLLER:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+            error: 'Internal Server Error'
+        })
+    }
+}
+
+const editUserController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const userData = await editUserService(id);
+
+        res.status(200).json({
+            success: true,
+            message: "User Updated Successfully",
+            response: userData
+        })
+    } catch (error) {
+        console.error("ERROR IN editUser CONTROLLER:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+            error: 'Internal Server Error'
+        })
+    }
+}
+
+module.exports = { registerUserController , getUserController, deleteUserController, editUserController };
