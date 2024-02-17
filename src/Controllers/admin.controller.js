@@ -1,18 +1,24 @@
+
+// imports
 const adminModel = require("../Models/admin.model");
-const { registerUserService, deleteUserService, editUserService } =  require("../Services/admin.service");
+const { registerUserService, deleteUserService, editUserService } = require("../Services/admin.service");
+const auth = require('./auth.controller');
 
 
 const registerUserController = async (req, res) => {
     try {
 
-        const userData = req.body;
+        const data = req.body;
+        
+        const token = auth.signup(data);
 
-        const adminData = await registerUserService(userData);
+        const userData = await registerUserService(data);
 
         res.status(201).json({
             success: true,
             message: "User Registered Successfully",
-            response: adminData
+            response: userData,
+            token: token
         })
     } catch (error) {
         console.error("ERROR IN registerUser CONTROLLER:", error);
@@ -27,7 +33,7 @@ const registerUserController = async (req, res) => {
 const getUserController = async (req, res) => {
     try {
         const userData = await adminModel.find();
-        
+
         res.status(200).json({
             success: true,
             message: "User Fetched Successfully",
@@ -66,13 +72,13 @@ const editUserController = async (req, res) => {
     try {
         const { id } = req.params;
         const userData = req.body;
-        
-        const updatedUser  = await editUserService(id, userData);
+
+        const updatedUser = await editUserService(id, userData);
 
         res.status(200).json({
             success: true,
             message: "User Updated Successfully",
-            response: updatedUser 
+            response: updatedUser
         })
     } catch (error) {
         console.error("ERROR IN editUser CONTROLLER:", error);
@@ -84,4 +90,4 @@ const editUserController = async (req, res) => {
     }
 }
 
-module.exports = { registerUserController , getUserController, deleteUserController, editUserController };
+module.exports = { registerUserController, getUserController, deleteUserController, editUserController };
