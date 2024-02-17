@@ -5,9 +5,9 @@ const { registerUserService, deleteUserService, editUserService } =  require("..
 const registerUserController = async (req, res) => {
     try {
 
-        const { username, profile, email, password, roleId } = req.body;
+        const userData = req.body;
 
-        const adminData = await registerUserService(username, profile, email, password, roleId);
+        const adminData = await registerUserService(userData);
 
         res.status(201).json({
             success: true,
@@ -18,7 +18,8 @@ const registerUserController = async (req, res) => {
         console.error("ERROR IN registerUser CONTROLLER:", error);
         return res.status(500).json({
             success: false,
-            message: error.message
+            message: error.message,
+            error: 'Internal Server Error'
         })
     }
 }
@@ -64,13 +65,14 @@ const deleteUserController = async (req, res) => {
 const editUserController = async (req, res) => {
     try {
         const { id } = req.params;
+        const userData = req.body;
         
-        const userData = await editUserService(id);
+        const updatedUser  = await editUserService(id, userData);
 
         res.status(200).json({
             success: true,
             message: "User Updated Successfully",
-            response: userData
+            response: updatedUser 
         })
     } catch (error) {
         console.error("ERROR IN editUser CONTROLLER:", error);

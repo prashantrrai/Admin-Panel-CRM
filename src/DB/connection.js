@@ -10,6 +10,6 @@ mongoose.connect(MONGO_URI)
 .then((response) => {
     console.log("Database Connected");
 }).catch((error) => {
-    console.log("SOME BUGS IN Connection FILE :",error);
+    console.error("SOME BUGS IN Connection FILE :", error);
 })
 

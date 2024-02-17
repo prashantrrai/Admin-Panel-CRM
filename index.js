@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-app.use(homeRoutes);
+app.use("/api/v1", homeRoutes);
 app.use("/api/v1" ,adminRouter);
 
 // server listening
