@@ -8,7 +8,7 @@ require("./src/DB/connection");
 // imports routes
 const homeRoutes = require("./src/Routes/index");
 const adminRouter = require("./src/Routes/admin.route");
-const { login } = require("./src/Controllers/auth.controller");
+const authRouter = require("./src/Routes/auth.route");
 
 
 const app = express();
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1", homeRoutes);
 app.use("/api/v1", adminRouter);
-app.use("/api/v1", login);
+app.use("/api/v1", authRouter);
 
 // server listening
 app.listen(PORT, () => {

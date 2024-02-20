@@ -2,7 +2,7 @@
 // imports
 const adminModel = require("../Models/admin.model");
 const { registerUserService, deleteUserService, editUserService } = require("../Services/admin.service");
-const auth = require('./auth.controller');
+const { signupService } = require("../Services/auth.service");
 
 
 const registerUserController = async (req, res) => {
@@ -10,7 +10,7 @@ const registerUserController = async (req, res) => {
 
         const data = req.body;
         
-        const token = auth.signup(data);
+        const token = await signupService(data);
 
         const userData = await registerUserService(data);
 
@@ -90,4 +90,24 @@ const editUserController = async (req, res) => {
     }
 }
 
-module.exports = { registerUserController, getUserController, deleteUserController, editUserController };
+const getUserByIdController = async (req, res) => {
+    try {
+        const { Id } = req.params;
+        console.log(Id)
+        const userData = await adminModel.findById(Id);
+
+        res.status(200).json({
+            success: true,
+            message: "User Fetched Successfully",
+            response: userData
+        })
+    } catch (error) {
+        console.error("ERROR IN getUserById CONTROLLER:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+module.exports = { registerUserController, getUserController, deleteUserController, editUserController, getUserByIdController };
