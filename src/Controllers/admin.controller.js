@@ -71,6 +71,7 @@ const deleteUserController = async (req, res) => {
 const editUserController = async (req, res) => {
     try {
         const { id } = req.params;
+        
         const userData = req.body;
 
         const updatedUser = await editUserService(id, userData);
@@ -92,9 +93,9 @@ const editUserController = async (req, res) => {
 
 const getUserByIdController = async (req, res) => {
     try {
-        const { Id } = req.params;
-        console.log(Id)
-        const userData = await adminModel.findById(Id);
+        const { id } = req.params;
+        
+        const userData = await adminModel.findById(id);
 
         res.status(200).json({
             success: true,

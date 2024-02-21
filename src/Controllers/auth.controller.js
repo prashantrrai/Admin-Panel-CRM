@@ -8,7 +8,7 @@ const login = async (req, res) => {
         const credentials = req.body;
 
         const token = await loginService(credentials);
-        console.log(token)
+        
         res.status(200).json({
             success: true,
             message: "Login Successfully",

@@ -27,7 +27,7 @@ const loginService = async (credentials) => {
             }
         })
 
-        const token = jwt.sign({ id: user._id, username: user.username, email: user.email, roleId: user.roleId, role: user.roleDetails }, secretKey, { expiresIn: '20m' });
+        const token = jwt.sign({ id: user._id, username: user.username, email: user.email, roleId: user.roleId, role: user.roleDetails }, secretKey, { expiresIn: '1h' });
 
         return token;
 
