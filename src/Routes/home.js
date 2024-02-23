@@ -1,5 +1,6 @@
 const { Router } = require('express');
 
+// custom status
 const STATUS_OK = 200;
 const STATUS_ERROR = 500;
 const MESSAGE_OK = 'API is working';

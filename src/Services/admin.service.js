@@ -49,7 +49,7 @@ const deleteUserService = async (id) => {
         const user = await adminModel.findById(id);
 
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            throw new Error('User not found');
         }
 
         // User exists, proceed with deletion
