@@ -16,10 +16,10 @@ const forgotpasswordService = async (email) => {
         }
 
         // generate token for 10 minutes expiry for link
-        const token = jwt.sign({ email }, secretKey, { expiresIn: '10m' });
+        const token = jwt.sign({ email }, secretKey, { expiresIn: '1m' });
 
         // now send an Email with password reset link
-        const resetLink = `${SERVER_URL}/resetpassword?token=${token}`;
+        const resetLink = `https://${SERVER_URL}/resetpassword?token=${token}`;
         // sendEmail(existinguser.email, 'Password Reset', `Click this link to reset your password: ${resetLink}`);
 
         return token;
@@ -39,7 +39,7 @@ const resetPasswordService = async (token, newPassword) => {
         
         // Validate the new password
         if (!newPassword) {
-            throw new Error("New password is required");
+            throw new Error("new-password is required");
         }
 
         // Hashing the password before saving it.

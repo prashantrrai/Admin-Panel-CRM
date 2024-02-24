@@ -1,8 +1,10 @@
 require("dotenv").config();
 const SERVER_URL = process.env.SERVER_URL;
 
+
 // imports
 const { forgotpasswordService, resetPasswordService } = require("../Services/forgotPassword.service");
+const { revokedTokens } = require("../middlewares/revoke-token.middleware");
 
 const forgotpassword = async (req, res) => {
     try {
@@ -11,12 +13,13 @@ const forgotpassword = async (req, res) => {
         const token = await forgotpasswordService(email);
 
         // Construct the reset link with the token
-        const resetLink = `${SERVER_URL}/resetpassword/${token}`;
+        const resetLink = `https://${SERVER_URL}/resetpassword/${token}`;
 
         res.status(200).json({
             success: true,
             message: "Password reset email sent",
-            resetLink: resetLink
+            resetLink: resetLink,
+            token: token
         })
 
     } catch (error) {
@@ -32,10 +35,13 @@ const forgotpassword = async (req, res) => {
 const resetPassword = async (req, res) => {
     try {
         const { token } = req.params;
-        const { newPassword, confirmpassword } = req.body;
-        
+        const { newPassword } = req.body;
+
         // Implement logic to reset password using the token
         await resetPasswordService(token, newPassword);
+
+        // Add the token to the list of revoked tokens or black-list
+        revokedTokens.add(token);
 
         res.status(200).json({
             success: true,

@@ -29,6 +29,7 @@ app.use("/api/v1", forgotPasswordRouter)
 
 // server listening
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}/api/v1`);
+    console.log(`Local Server is running on http://localhost:${PORT}/api/v1`);
+    console.log(`Remote Server is running on https://${process.env.SERVER_URL}`);
 })
 

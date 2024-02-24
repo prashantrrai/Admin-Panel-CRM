@@ -6,18 +6,23 @@ const adminModel = require('../Models/admin.model');
 const registerUserService = async (userData) => {
     try {
 
-        if (!userData.username || !userData.profile || !userData.email || !userData.password || !userData.roleId) {
-            throw new Error('Invalid input. Please provide valid data.');
+        const { username, profile, email, password, roleId } = userData;
+
+        // Check if any required field is missing
+        if (!username || !profile || !email || !password || !roleId) {
+            throw new Error('Sorry, all fields are required.');
         }
 
+        const existingEmail = await adminModel.findOne({ email: email });
+        
         // Checking if email is already registered.
-        const existingEmail = await adminModel.findOne({ email: userData.email });
         if (existingEmail) {
             throw new Error('Email is already registered. Please use a different email.');
         }
 
+        const existingUsername = await adminModel.findOne({ username: username });
+        
         // Checking if username is already registered.
-        const existingUsername = await adminModel.findOne({ username: userData.username });
         if (existingUsername) {
             throw new Error('Username is already registered. Please use a different username.');
         }
@@ -49,7 +54,7 @@ const deleteUserService = async (id) => {
         const user = await adminModel.findById(id);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new Error('Sorry, user not found');
         }
 
         // User exists, proceed with deletion
@@ -68,7 +73,7 @@ const editUserService = async (id, userData) => {
 
         // User exists, proceed with edit
         if (!user) {
-            throw new Error('User not found');
+            throw new Error('Sorry, user not found');
         }
 
         // Update user data
