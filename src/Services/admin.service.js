@@ -14,14 +14,14 @@ const registerUserService = async (userData) => {
         }
 
         const existingEmail = await adminModel.findOne({ email: email });
-        
+
         // Checking if email is already registered.
         if (existingEmail) {
             throw new Error('Email is already registered. Please use a different email.');
         }
 
         const existingUsername = await adminModel.findOne({ username: username });
-        
+
         // Checking if username is already registered.
         if (existingUsername) {
             throw new Error('Username is already registered. Please use a different username.');
@@ -76,11 +76,14 @@ const editUserService = async (id, userData) => {
             throw new Error('Sorry, user not found');
         }
 
+        // Hashing the password before saving it.
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+
         // Update user data
         user.username = userData.username;
         user.profile = userData.profile;
         user.email = userData.email;
-        user.password = userData.password;
+        user.password = hashedPassword;
         user.roleId = userData.roleId;
         user.isVerified = userData.isVerified;
         user.two_factor_enabled = userData.two_factor_enabled;
