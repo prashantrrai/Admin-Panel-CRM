@@ -1,7 +1,13 @@
 const bcrypt = require('bcrypt');
+const fs = require('fs');
+const util = require('util');
 
 // Import the admin model
 const adminModel = require('../Models/admin.model');
+const { sendMail } = require('./email.service');
+
+// Promisify fs.readFile
+const readFile = util.promisify(fs.readFile);
 
 const registerUserService = async (userData) => {
     try {
@@ -30,8 +36,17 @@ const registerUserService = async (userData) => {
         // Hashing the password before saving it.
         const hashedPassword = await bcrypt.hash(userData.password, 10);
 
+        // Load HTML template for forgot password email
+        const template = await readFile('src/templates/registration-success.html', 'utf8');
+
+        // compose email content
+        const subject = 'User Registration Successful';
+        const description = template.replace('{{ username }}', username).replace('{{ password }}', password);
+
+        await sendMail(email, subject, description);
+
         // Create and save the admin in a single step
-        return await adminModel.create({
+        const result = await adminModel.create({
             username: userData.username,
             profile: userData.profile,
             email: userData.email,
@@ -40,6 +55,8 @@ const registerUserService = async (userData) => {
             isVerified: userData.isVerified,
             two_factor_enabled: userData.two_factor_enabled
         });
+
+        return result;
 
     } catch (error) {
         console.error('ERROR IN registerUser SERVICE:', error);
@@ -95,6 +112,7 @@ const editUserService = async (id, userData) => {
         throw error;
     }
 }
+
 
 
 module.exports = { registerUserService, deleteUserService, editUserService };

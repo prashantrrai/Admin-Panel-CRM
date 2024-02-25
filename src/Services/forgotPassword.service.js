@@ -1,12 +1,20 @@
 require("dotenv").config();
+
+// imports modules 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const secretKey = process.env.SECRET_KEY;
-const SERVER_URL = process.env.SERVER_URL;
+const fs = require('fs');
+const util = require('util');
 
 // imports
 const adminModel = require("../Models/admin.model");
 const { sendMail } = require("./email.service");
+
+const secretKey = process.env.SECRET_KEY;
+const SERVER_URL = process.env.SERVER_URL;
+
+// Promisify fs.readFile
+const readFile = util.promisify(fs.readFile);
 
 const forgotpasswordService = async (email) => {
     try {
@@ -19,20 +27,15 @@ const forgotpasswordService = async (email) => {
         // generate token for 10 minutes expiry for link
         const token = jwt.sign({ email }, secretKey, { expiresIn: '1m' });
 
-        // now send an Email with password reset link
+        // Load HTML template for forgot password email
+        const template = await readFile('src/templates/forgot-password.html', 'utf8');
+
+        // compose email content
         const resetLink = `https://${SERVER_URL}/resetpassword?token=${token}`;
         const subject = 'Forgot Password Request';
-        const description = `
-            <p>Dear ${existinguser.username},</p>
-            <p>We received a request to reset your password. To proceed, please click on the following link:</p>
-            <p>${resetLink}</p>
-            <p>If you didn't request this, you can safely ignore this email.</p>
-            <br>
-            <p>Thanks and Regards,</p>
-            <p>Team Neog Coding</p>
-            `;
+        const description = template.replace('{{ username }}', existinguser.username).replace('{{ resetLink }}', resetLink);
 
-        sendMail(existinguser.email, subject, description);
+        await sendMail(existinguser.email, subject, description);
 
         return token;
 

@@ -111,4 +111,6 @@ const getUserByIdController = async (req, res) => {
     }
 }
 
+
+
 module.exports = { registerUserController, getUserController, deleteUserController, editUserController, getUserByIdController };

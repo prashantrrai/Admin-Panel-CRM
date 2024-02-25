@@ -10,6 +10,7 @@ const adminRouter = require("./src/Routes/admin.route");
 const authRouter = require("./src/Routes/auth.route");
 const homeRoutes = require("./src/Routes/home");
 const forgotPasswordRouter = require("./src/Routes/forgotPassword.route");
+const otpRouter = require("./src/Routes/otp.route");
 
 
 // configurations
@@ -26,6 +27,7 @@ app.use("/api/v1", homeRoutes);
 app.use("/api/v1", adminRouter);
 app.use("/api/v1", authRouter);
 app.use("/api/v1", forgotPasswordRouter)
+app.use("/api/v1", otpRouter)
 
 // server listening
 app.listen(PORT, () => {
