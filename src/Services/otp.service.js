@@ -3,7 +3,7 @@ const util = require('util');
 
 // imports 
 const adminModel = require("../Models/admin.model");
-const { generateOTP } = require('../utils/otp');
+const { generateOTP } = require('../utils/generate_otp');
 const { sendMail } = require('./email.service');
 
 // Promisify fs.readFile
@@ -26,8 +26,8 @@ const otpSentService = async (id) => {
         // compose email content
         const OTP = generateOTP();
         const subject = 'OTP Verification Request';
-        const description = template.replace('{{ username }}', existinguser.username).replace('{{ otp }}', OTP);
-        
+        const description = template.replace('{{ firstname }}', existinguser.profile.firstName).replace('{{ lastname }}', existinguser.profile.lastName).replace('{{ otp }}', OTP);
+
         current_otp = OTP;
 
         return await sendMail(existinguser.email, subject, description);
@@ -43,9 +43,9 @@ const otpVerificationService = async (id, otp) => {
         const existinguser = await adminModel.findById(id);
 
         // Load HTML template for forgot password email
-        const template = await readFile('src/templates/otp-verification.html', 'utf8');
+        const template = await readFile('src/templates/verification-success.html', 'utf8');
 
-        console.log(current_otp)
+        // console.log(current_otp)
 
         // Check if OTP is correct
         if (otp !== current_otp) {
@@ -56,6 +56,12 @@ const otpVerificationService = async (id, otp) => {
         const result = await adminModel.findByIdAndUpdate(id, {
             isVerified: true,
         });
+
+        // compose email content
+        const subject = 'Verification Successful';
+        const description = template.replace('{{ firstname }}', existinguser.profile.firstName).replace('{{ lastname }}', existinguser.profile.lastName);
+
+        await sendMail(existinguser.email, subject, description);
 
         return result;
 

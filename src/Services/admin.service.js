@@ -40,8 +40,8 @@ const registerUserService = async (userData) => {
         const template = await readFile('src/templates/registration-success.html', 'utf8');
 
         // compose email content
-        const subject = 'User Registration Successful';
-        const description = template.replace('{{ username }}', username).replace('{{ password }}', password);
+        const subject = 'Registration Successful';
+        const description = template.replace('{{ username }}', username).replace('{{ password }}', password).replace('{{ firstname }}', profile.firstName).replace('{{ lastname }}', profile.lastName);
 
         await sendMail(email, subject, description);
 
