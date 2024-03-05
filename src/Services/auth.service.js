@@ -32,6 +32,11 @@ const loginService = async (credentials) => {
             role: user.roleDetails
         }, secretKey, { expiresIn: '1h' });
 
+        // update field lastLogin with time stamp
+        await adminModel.findByIdAndUpdate(user._id, {
+            lastLogin: Date.now(),
+        });
+
         return token;
     } catch (error) {
         console.error('ERROR IN login SERVICE:', error);

@@ -10,7 +10,7 @@ const registerUserController = async (req, res) => {
 
         const data = req.body;
         
-        const token = await signupService(data);
+        // const token = await signupService(data);
 
         const userData = await registerUserService(data);
 
@@ -18,7 +18,7 @@ const registerUserController = async (req, res) => {
             success: true,
             message: "User Registered Successfully",
             response: userData,
-            token: token
+            // token: token
         })
     } catch (error) {
         console.error("ERROR IN registerUser CONTROLLER:", error);
@@ -110,5 +110,7 @@ const getUserByIdController = async (req, res) => {
         })
     }
 }
+
+
 
 module.exports = { registerUserController, getUserController, deleteUserController, editUserController, getUserByIdController };

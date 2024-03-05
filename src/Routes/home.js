@@ -12,7 +12,8 @@ homeRoutes.get('/', (req, res) => {
     try {
         res.status(STATUS_OK).json({
             success: true,
-            message: MESSAGE_OK
+            message: MESSAGE_OK,
+            data: "Welcome to Admin Panel"
         });
     } catch (error) {
         console.error("ERROR IN Home ROUTE:", error);

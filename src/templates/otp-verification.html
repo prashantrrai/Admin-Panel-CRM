@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        /* Reset CSS */
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        ol,
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header img {
+            max-width: 100px; /* Adjust the max-width as needed */
+        }
+
+        /* Content */
+        .content {
+            background-color: #00ff1523;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img src="https://i.imgur.com/c5GeXES.png" alt="company_logo">
+            <h2>Account Verification</h2>
+        </div>
+
+        <div class="content">
+            <p>Hello <strong>{{ firstname }} {{ lastname }}</strong>,</p>
+            <br>
+            <p>Your OTP for verification is: <strong>{{ otp }}</strong></p>
+            <p>Please enter this OTP to verify your account.</p>
+            <br>
+            <p>Thanks & Regards,</p>
+            <p>NeoG Coding</p>
+        </div>
+
+        <div class="footer">
+            <p>NeoG Coding</p>
+            <p>Shivranjani Cross-over, Ahmedabad, Gujarat, India</p>
+            <p>Email: prashantraicareer@gmail.com | Phone: +91 7359030960</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

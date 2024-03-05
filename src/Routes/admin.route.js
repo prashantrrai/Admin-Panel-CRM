@@ -7,7 +7,7 @@ const { authenticateToken } = require("../middlewares/auth.middleware");
 const adminRouter = Router();
 
 
-adminRouter.post("/admin", authenticateToken, registerUserController);
+adminRouter.post("/admin", registerUserController);
 adminRouter.get("/admin", authenticateToken, getUserController);
 adminRouter.delete("/admin/:id", authenticateToken, deleteUserController);
 adminRouter.put("/admin/:id", authenticateToken, editUserController);
